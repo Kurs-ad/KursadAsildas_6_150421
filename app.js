@@ -7,6 +7,11 @@ mongoose.set('useCreateIndex', true); //empêche dépréciation node
 //importation de helmet (entre autres, filtre les scripts intersites (XSS))
 let helmet = require('helmet');
 
+let session = require('express-session');
+
+//const Ddos = require('ddos');
+//const ddos = new Ddos;
+
 //donne accès aux chemins de notre système de fichiers
 const path = require('path');
 
@@ -22,6 +27,7 @@ mongoose.connect('mongodb+srv://Kursad:kursad@projet6oc.2xhij.mongodb.net/myFirs
 //notre application, qui est une fonction qui va recevoir la requête et la réponse
 const app = express();
 
+//app.use(ddos.express);
 app.use(helmet());
 
 app.use(session({

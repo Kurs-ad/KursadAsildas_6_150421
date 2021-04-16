@@ -1,5 +1,5 @@
 //importation du package http de node
-const https = require("https");
+const http = require("http");
 
 //import de l'application
 const app = require('./app');
@@ -43,7 +43,7 @@ const errorHandler = error => {
 };
 
 // création du serveur
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 server.on('error', errorHandler);
 server.on('listening', () => {

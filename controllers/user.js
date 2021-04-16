@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
-    bcrypt.hash(req.body.password, 10)
-    .then(hash => {
+    bcrypt.hash(req.body.password, 10) //nous appelons la fonction de hachage de bcrypt dans notre mot de passe et lui demandons de « saler » le mot de passe 10 fois.
+    .then(hash => { // nous recevons le hash généré
         const user = new User({
             email: req.body.email,
             password: hash
@@ -30,10 +30,10 @@ exports.login = (req, res, next) => {
             }
             res.status(200).json({
                 userId: user._id,
-                token: jwt.sign(
+                token: jwt.sign( // nous utilisons la fonction sign dejsonwebtoken pour encoder un nouveau token
                     { userId: user._id },
-                    'RANDOM_TOKEN_SECRET',
-                    { expiresIn: '24h' }
+                    'RANDOM_TOKEN_SECRET', // nous utilisons une chaîne secrète de développement temporaire RANDOM_SECRET_KEY pour encoder notre token, à remplacer pour la prod
+                    { expiresIn: '24h' } // nous définissons la durée de validité du token à 24 heures. L'utilisateur devra donc se reconnecter au bout de 24 heures ;
                 )
             });
         })

@@ -2,7 +2,6 @@ const Sauce = require('../models/Sauce');
 const fs = require('fs');
 
 exports.createSauce = (req, res, next) => {
-    console.log(req.body.sauce);
     const sauceObject = JSON.parse(req.body.sauce); //on extrait l'objet JSON de "sauce"
     delete sauceObject._id // car mongoDB nous fournit un id (c'était req.body._id)
     const sauce = new Sauce({
@@ -13,7 +12,6 @@ exports.createSauce = (req, res, next) => {
         usersLiked: [],
         usersDisliked: []
     });
-    console.log(sauce)
     sauce.save() //enregistre sauce dans la BDD et renvoie une promise
     .then(() => res.status(201).json({ message : 'Objet enregistré' }))
     .catch(error => res.status(400).json({ error }));
@@ -22,36 +20,29 @@ exports.createSauce = (req, res, next) => {
 exports.like = (req, res, next) => {
     Sauce.findOne({ userId: req.body.userId })
     .then(sauce => {
-        console.log(req.body.like)
         const id = req.body.userId;
         const like = req.body.like;
         let likeIndex = sauce.usersLiked.indexOf(id);
         let dislikeIndex = sauce.usersDisliked.indexOf(id);
         if (like == 1){
             if(likeIndex < 0){
-                console.log(likeIndex)
                 sauce.usersLiked.push(id);
                 sauce.likes ++;
-                console.log(1)
             }
         } else if (like == -1){
             if(dislikeIndex < 0){
                 sauce.usersDisliked.push(id);
                 sauce.dislikes ++;
-                console.log(-1)
             }
         } else {
             if(likeIndex > -1){
                 sauce.usersLiked.splice(likeIndex, 1);
                 sauce.likes --;
-                console.log("annule 1")
             } else {
                 sauce.usersDisliked.splice(dislikeIndex, 1);
                 sauce.dislikes --;
-                console.log("annule -1")
             }
         }
-        console.log(sauce)
         sauce.save();
         res.status(201).json({sauce})
     })

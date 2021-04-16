@@ -7,10 +7,10 @@ mongoose.set('useCreateIndex', true); //empêche dépréciation node
 //importation de helmet (entre autres, filtre les scripts intersites (XSS))
 let helmet = require('helmet');
 
-let session = require('express-session');
+let session = require('cookie-session');
 
-//const Ddos = require('ddos');
-//const ddos = new Ddos;
+const Ddos = require('ddos');
+const ddos = new Ddos;
 
 //donne accès aux chemins de notre système de fichiers
 const path = require('path');
@@ -27,17 +27,19 @@ mongoose.connect('mongodb+srv://Kursad:kursad@projet6oc.2xhij.mongodb.net/myFirs
 //notre application, qui est une fonction qui va recevoir la requête et la réponse
 const app = express();
 
-//app.use(ddos.express);
+app.use(ddos.express);
 app.use(helmet());
 
+let expiryDate = new Date( Date.now() + 60 * 60 * 1000 ); // 1 hour
 app.use(session({
-    cookieName: 'sessionName',
-    secret: "monsupersecret ",
-    resave: false,
-    saveUninitialized: true,
-    httpOnly: true,  // dont let browser javascript access cookie ever
-    secure: true, // only use cookie over https
-    ephemeral: true // delete this cookie while browser close
+    name: 'nom de session pas par défaut',
+    keys: ['key1', 'key2'], //Liste des clés utilisées pour authentifier et vérifier les cookies
+    cookie: { secure: true, //Garantit que le navigateur n’envoie le cookie que sur HTTPS
+            httpOnly: true, //Garantit que le cookie n’est envoyé que sur HTTP(S), pas au JavaScript du client, ce qui renforce la protection contre les attaques de type cross-site scripting.
+            domain: 'example.com', //Indique le domaine du cookie ; utilisez cette option pour une comparaison avec le domaine du serveur dans lequel l’URL est demandée. S’ils correspondent, vérifiez ensuite l’attribut de chemin.
+            path: 'foo/bar', //Indique le chemin du cookie ; utilisez cette option pour une comparaison avec le chemin demandé. Si le chemin et le domaine correspondent, envoyez le cookie dans la demande.
+            expires: expiryDate //Définit la date d’expiration des cookies persistants.
+          }
  }));
 
 //Empêcher les erreurs CORS

@@ -7,10 +7,10 @@ const multer = require('../middleware/multer-config');//à mettre après auth da
 
 //traiter les requêtes POST
 router.post('/', auth, multer, saucesCtrl.createSauce);
+router.post('/:id/like', auth, multer, saucesCtrl.like);
 
 //pour modifier un objet
 router.put('/:id', auth, multer, saucesCtrl.modifySauce);
-router.post('/:id/like', auth, multer, saucesCtrl.like);
 
 //route pour la suppression d'un objet
 router.delete('/:id', auth, saucesCtrl.deleteSauce);

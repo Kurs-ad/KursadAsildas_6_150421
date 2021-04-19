@@ -18,16 +18,19 @@ exports.createSauce = (req, res, next) => {
 };
 
 exports.like = (req, res, next) => {
-    Sauce.findOne({ userId: req.body.userId })
+    Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
+        console.log(sauce)
         const id = req.body.userId;
         const like = req.body.like;
         let likeIndex = sauce.usersLiked.indexOf(id);
         let dislikeIndex = sauce.usersDisliked.indexOf(id);
         if (like == 1){
+            console.log(sauce)
             if(likeIndex < 0){
                 sauce.usersLiked.push(id);
                 sauce.likes ++;
+                console.log(sauce)
             }
         } else if (like == -1){
             if(dislikeIndex < 0){

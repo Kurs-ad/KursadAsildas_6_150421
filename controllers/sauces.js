@@ -20,7 +20,6 @@ exports.createSauce = (req, res, next) => {
 exports.like = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
-        console.log(sauce)
         const id = req.body.userId;
         const like = req.body.like;
         let likeIndex = sauce.usersLiked.indexOf(id);

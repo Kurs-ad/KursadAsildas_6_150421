@@ -7,7 +7,6 @@ mongoose.set('useCreateIndex', true); //empêche dépréciation node
 require('dotenv').config();
 let user = process.env.USER;
 let password = process.env.PASS;
-console.log(user, password)
 
 //importation de helmet (entre autres, filtre les scripts intersites (XSS))
 let helmet = require('helmet');

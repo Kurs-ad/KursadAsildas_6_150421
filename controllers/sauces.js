@@ -25,7 +25,6 @@ exports.like = (req, res, next) => {
         let likeIndex = sauce.usersLiked.indexOf(id);
         let dislikeIndex = sauce.usersDisliked.indexOf(id);
         if (like == 1){
-            console.log(sauce)
             if(likeIndex < 0){
                 sauce.usersLiked.push(id);
                 sauce.likes ++;

@@ -7,7 +7,7 @@ exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10) //nous appelons la fonction de hachage de bcrypt dans notre mot de passe et lui demandons de « saler » le mot de passe 10 fois.
     .then(hash => { // nous recevons le hash généré
         const user = new User({
-            email: req.body.email,
+            email: Buffer.from(req.body.email).toString('base64'),
             password: hash
         });
         user.save()
@@ -18,7 +18,7 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: Buffer.from(req.body.email).toString('base64') })
     .then(user => {
         if (!user) {
             return res.status(401).json({ error: 'Utilisateur non trouvé '});

@@ -3,6 +3,11 @@ const express = require('express');
 //importation de mongoose
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true); //empêche dépréciation node
+//importation de dotenv
+require('dotenv').config();
+let user = process.env.USER;
+let password = process.env.PASS;
+console.log(user, password)
 
 //importation de helmet (entre autres, filtre les scripts intersites (XSS))
 let helmet = require('helmet');
@@ -18,7 +23,7 @@ const path = require('path');
 const saucesRoutes = require('./routes/sauces');
 const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://Kursad:kursad@projet6oc.2xhij.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://'+user+':'+password+'@projet6oc.2xhij.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
     { useNewUrlParser: true,
     useUnifiedTopology: true })
     .then(() => console.log('Connexion à MongoDB réussie !'))
